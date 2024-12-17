@@ -66,23 +66,33 @@ const renderTasks = (tasks) => {
   taskContainerEl.textContent = "";
   tasks.map((task) => {
     const listItem = document.createElement("li");
-    listItem.className = `list-group-item bg-light border border-1 ${
+    listItem.className = `list-group-item bg-light border border-1 d-flex justify-content-between ${
       task.completed ? `border-success` : `border-warning`
     } rounded-2 mb-3`;
 
+    const wrapperDiv = document.createElement("div");
     const checkBox = document.createElement("input");
     checkBox.className = "me-3";
     checkBox.type = "checkbox";
     checkBox.checked = task.completed;
     checkBox.onchange = () => store.dispatch(toggleTask(task.id));
     checkBox.id = task.id;
-    listItem.appendChild(checkBox);
+    wrapperDiv.appendChild(checkBox);
 
     const text = document.createElement("label");
     text.htmlFor = task.id;
     text.innerHTML = `${task.id}. <em>${task.title}</em> - <small>${task.description}</small>`;
-    listItem.appendChild(text);
+    wrapperDiv.appendChild(text);
+    listItem.append(wrapperDiv);
 
+    const iconDiv = document.createElement("div");
+
+    if (task.completed) {
+      iconDiv.innerHTML = `<i class="bi bi-check-circle" style="color: green;"></i>`;
+    } else {
+      iconDiv.textContent = "";
+    }
+    listItem.appendChild(iconDiv);
     taskContainerEl.appendChild(listItem);
   });
 };
